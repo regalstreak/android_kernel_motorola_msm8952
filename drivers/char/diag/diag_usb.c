@@ -295,7 +295,9 @@ static void diag_usb_write_done(struct diag_usb_info *ch,
 	int len = 0;
 	struct diag_usb_buf_tbl_t *entry = NULL;
 	unsigned char *buf = NULL;
+       /* MOT: comment out
 	unsigned long flags;
+       */
 
 	if (!ch || !req)
 		return;
@@ -313,6 +315,7 @@ static void diag_usb_write_done(struct diag_usb_info *ch,
 		diag_ws_on_copy_complete(DIAG_WS_MUX);
 		diagmem_free(driver, req, ch->mempool);
 		return;
+
 	}
 	DIAG_LOG(DIAG_DEBUG_MUX, "full write_done, ctxt: %d\n",
 		 ctxt);
