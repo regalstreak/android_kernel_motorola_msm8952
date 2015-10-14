@@ -289,15 +289,14 @@ static void usb_read_done_work_fn(struct work_struct *work)
 }
 
 static void diag_usb_write_done(struct diag_usb_info *ch,
-				struct diag_request *req)
+				struct diag_request *req,
+				int sync)
 {
 	int ctxt = 0;
 	int len = 0;
 	struct diag_usb_buf_tbl_t *entry = NULL;
 	unsigned char *buf = NULL;
-       /* MOT: comment out
 	unsigned long flags;
-       */
 
 	if (!ch || !req)
 		return;
@@ -368,7 +367,10 @@ static void diag_usb_notifier(void *priv, unsigned event,
 			   &usb_info->read_done_work);
 		break;
 	case USB_DIAG_WRITE_DONE:
-		diag_usb_write_done(usb_info, d_req);
+		diag_usb_write_done(usb_info, d_req, 0);
+		break;
+	case USB_DIAG_WRITE_DONE_SYNC:
+		diag_usb_write_done(usb_info, d_req, 1);
 		break;
 	default:
 		pr_err_ratelimited("diag: Unknown event from USB diag\n");
